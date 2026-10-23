@@ -10,17 +10,21 @@ struct word {
     int difficulty; 
 };
 
-struct word words[] = {
-    {"peterpan",   1},
-    {"tinkerbell", 2},
-    {"neverland",  1}
-};
-
 char * selectWord(){ 
-    int count = sizeof(words) / sizeof(words[0]);
-    int number = rand() % (count);
+   static char wordlist[1000][20];   
+    static int count = 0;             
 
-    return words[number].text;
+    if (count == 0) {                 
+        FILE *fptr = fopen("words.txt", "r");
+        if (fptr == NULL) { printf("no file\n"); exit(1); }
+        while (count < 1000 && fgets(wordlist[count], 20, fptr) != NULL) {
+            wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
+            count++;
+        }
+        fclose(fptr);
+    }
+
+    return wordlist[rand() % count];
 }
 
 void gameLoop(){
