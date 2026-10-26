@@ -15,7 +15,7 @@ char * selectWord(){
     static int count = 0;             
 
     if (count == 0) {                 
-        FILE *fptr = fopen("words.txt", "r");
+        FILE *fptr = fopen("words2.txt", "r");
         if (fptr == NULL) { printf("no file\n"); exit(1); }
         while (count < 1000 && fgets(wordlist[count], 20, fptr) != NULL) {
             wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
@@ -37,6 +37,8 @@ void gameLoop(){
     char shown[20];
     printf("%s\n", answer);
 
+    for (int i = 0; i < lenght; i++) shown[i] = '_';
+            shown[lenght] = '\0';
     while (1)
     {
         printf("%s\n", shown);
@@ -45,8 +47,7 @@ void gameLoop(){
         printf("Type a letter: ");
         scanf(" %c", &guess);  
 
-        for (int i = 0; i < lenght; i++) shown[i] = '_';
-            shown[lenght] = '\0';
+     
         
 
         int hit = 0;
