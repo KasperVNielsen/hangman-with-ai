@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "wordbank.h"
+
 struct word {
     char *text;  
     //lives  
@@ -10,20 +12,10 @@ struct word {
 };
 
 char * selectWord(){ 
-   static char wordlist[466471][64];   
-   static int count = 0;             
-   
-    if (count == 0) {                 
-        FILE *fptr = fopen("words2.txt", "r");
-        if (fptr == NULL) { printf("no file\n"); exit(1); }
-        while (count < 466471 && fgets(wordlist[count], 64, fptr) != NULL) {
-            wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
-            count++;
-        }
-        fclose(fptr);
-    }
+    readList();
     long number= ((long)rand() << 15) | rand();
-    return wordlist[number % count + 1];
+    int index = number % getCount();
+    return getWord(index);
 }
 
 void gameLoop(){  
@@ -33,7 +25,7 @@ void gameLoop(){
 
     int lenght = strlen(answer);
     char shown[32];
-    //printf("%s\n", answer);
+    printf("%s\n", answer);
 
     for (int i = 0; i < lenght; i++) shown[i] = '_';
             shown[lenght] = '\0';
