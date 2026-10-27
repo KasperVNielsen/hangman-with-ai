@@ -11,19 +11,19 @@ struct word {
 };
 
 char * selectWord(){ 
-   static char wordlist[1000][20];   
+   static char wordlist[466471][32];   
     static int count = 0;             
 
     if (count == 0) {                 
         FILE *fptr = fopen("words2.txt", "r");
         if (fptr == NULL) { printf("no file\n"); exit(1); }
-        while (count < 1000 && fgets(wordlist[count], 20, fptr) != NULL) {
+        while (count < 466471 && fgets(wordlist[count], 32, fptr) != NULL) {
             wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
             count++;
         }
         fclose(fptr);
     }
-
+    long number= ((long)rand() << 15) | rand();
     return wordlist[rand() % count];
 }
 
@@ -46,9 +46,6 @@ void gameLoop(){
 
         printf("Type a letter: ");
         scanf(" %c", &guess);  
-
-     
-        
 
         int hit = 0;
         for (int i = 0; i < lenght; i++) {
