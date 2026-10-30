@@ -11,7 +11,7 @@ struct word {
     int difficulty; 
 };
 
-char * selectWord(){ 
+char* selectWord(){ 
     readList();
     long number= ((long)rand() << 15) | rand();
     int index = number % getCount();
@@ -25,7 +25,7 @@ void gameLoop(){
 
     int lenght = strlen(answer);
     char shown[32];
-    printf("%s\n", answer);
+    //printf("%s\n", answer);
 
     for (int i = 0; i < lenght; i++) shown[i] = '_';
             shown[lenght] = '\0';
