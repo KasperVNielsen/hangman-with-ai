@@ -23,13 +23,17 @@ void readList(){
             if (strlen(wordlist[count]) == 0) {
                 continue;
             }
-
-             // Convert everything to lowercase
+            if(strlen(wordlist[count]) < 3)
+                continue;
+            
+            // Convert everything to lowercase
             for (int i = 0; wordlist[count][i] != '\0'; i++) {
                 wordlist[count][i] = tolower((unsigned char)wordlist[count][i]);
             }
 
-              // Validate word
+         
+
+            // Validate word
             int valid = 1;
 
             for (int i = 0; wordlist[count][i] != '\0'; i++) {
