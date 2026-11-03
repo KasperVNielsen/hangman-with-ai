@@ -10,32 +10,30 @@ static char wordlist[466471][64];
 
 void readList(){
    
-    if (count == 0) {   
-        char buffer[64];
-              
+    if (count == 0) {                 
         FILE *fptr = fopen("words2.txt", "r");
 
         if (fptr == NULL) { printf("no file\n"); exit(1); }
 
-        while (count < 466471 && fgets(buffer, 64, fptr) != NULL) {
-
+        while (count < 466471 && fgets(wordlist[count], 64, fptr) != NULL) {
             // Remove newline characters
-            buffer[strcspn(buffer, "\r\n")] = '\0';
+            wordlist[count][strcspn(wordlist[count], "\r\n")] = '\0';
 
-            // Skip empty lines
-            if (strlen(buffer) == 0) {
-                 continue;
+             // Skip empty lines
+            if (strlen(wordlist[count]) == 0) {
+                continue;
             }
 
-            // Convert everything to lowercase
-            for (int i = 0; buffer[i] != '\0'; i++) {
-                buffer[i] = tolower((unsigned char)buffer[i]);
+             // Convert everything to lowercase
+            for (int i = 0; wordlist[count][i] != '\0'; i++) {
+                wordlist[count][i] = tolower((unsigned char)wordlist[count][i]);
             }
 
+              // Validate word
             int valid = 1;
 
-            for (int i = 0; buffer[i] != '\0'; i++) {
-                if (buffer[i] < 'a' || buffer[i] > 'z') {
+            for (int i = 0; wordlist[count][i] != '\0'; i++) {
+                if (wordlist[count][i] < 'a' || wordlist[count][i] > 'z') {
                     valid = 0;
                     break;
                 }
@@ -45,7 +43,7 @@ void readList(){
                 continue;
             }
 
-            strcpy(wordlist[count], buffer);
+            //wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
             count++;
         }
         fclose(fptr);
