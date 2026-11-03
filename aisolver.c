@@ -38,11 +38,22 @@ bool wordMatcher(char* word, char* missedLetters, int missedCount, char* pattern
     return true;
 }
 
+char frequencyChooser(char* candidates[],int candidateCount){
+    int countPerLetter[26] = {0};
+
+    for(int i = 0; i < candidateCount; i++){
+        for(int j = 0;candidates[i][j] != '\0';j++){
+            int index = candidates[i][j] - 'a';
+            countPerLetter[index]++;
+        }
+    }
+}
+
 int main(){
     readList();     
     int count = getCount();
     
-    char pattern[] = "ne_erland";
+    char pattern[] = "_________";
 
     char missedLetters[26];
     int missedCount = 0;
@@ -60,7 +71,9 @@ int main(){
            } 
            else{ break;}
         }
+        frequencyChooser(candidates,pickCount);
     }
+
     printf("Candidates: %d\n", pickCount);
     printf("First few: ");
     for (int i = 0; i < pickCount && i < 5; i++)
