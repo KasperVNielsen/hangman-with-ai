@@ -48,16 +48,34 @@ int main(){
     int missedCount = 0;
 
     static char* candidates[60000];
-    int picksCount = 0;
+    int pickCount = 0;
     
     for (int i = 0; i < count; i++) {
         char* word = getWord(i);
 
         if (wordMatcher(word, missedLetters, missedCount, pattern )) { 
-            candidates[picksCount] = word;
-            picksCount++;
+           if(pickCount < 60000){
+               candidates[pickCount] = word;
+               pickCount++;
+           } 
+           else{ break;}
         }
     }
+    printf("Candidates: %d\n", pickCount);
+    printf("First few: ");
+    for (int i = 0; i < pickCount && i < 5; i++)
+        printf("%s ", candidates[i]);
+    printf("\nMiddle: ");
+    if (pickCount > 0)
+        printf("%s ", candidates[pickCount / 2]);
+    printf("\nLast few: ");
+    for (int i = pickCount - 5 < 0 ? 0 : pickCount - 5; i < pickCount; i++)
+        printf("%s ", candidates[i]);
+    printf("\n");
 
+      printf("loaded: %d\n", getCount());
+printf("[%s] len=%zu\n", getWord(0),      strlen(getWord(0)));
+printf("[%s] len=%zu\n", getWord(5000),   strlen(getWord(5000)));
+printf("[%s] len=%zu\n", getWord(getCount()-1), strlen(getWord(getCount()-1)));
 
 }

@@ -43,7 +43,6 @@ void readList(){
                 continue;
             }
 
-            //wordlist[count][strcspn(wordlist[count], "\n")] = '\0'; 
             count++;
         }
         fclose(fptr);
