@@ -27,13 +27,14 @@ void gameLoop(){
     char* answer = selectWord();
 
     int lenght = strlen(answer);
-    char shown[32];
+    char shown[64];
     char missedLetters[26];
     int missedCount = 0;
     //printf("%s\n", answer);
 
     for (int i = 0; i < lenght; i++) shown[i] = '_';
             shown[lenght] = '\0';
+
     while (1)
     {
         printf("%s\n", shown);
@@ -82,7 +83,6 @@ void gameLoop(){
 int main(void){
     srand(time(NULL));
 
-    
     gameLoop();
     return 0;
 }
