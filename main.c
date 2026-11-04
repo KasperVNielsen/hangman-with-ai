@@ -10,8 +10,8 @@
 
 struct word {
     char *text;  
-    //lives  
-    int difficulty; 
+    //might come later the higer the difficulty less lives and harder words
+    int difficulty
 };
 
 char* selectWord(){ 
@@ -73,7 +73,7 @@ void gameLoop(){
         }
 
         if (strcmp(shown, answer) == 0) {
-            printf("You won! The word was: %s\n", answer);
+            printf("\nYou won! The word was: %s\n", answer);
             break;
         }
         Sleep(800);
