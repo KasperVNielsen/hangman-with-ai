@@ -20,33 +20,62 @@ bool wordMatcher(char* word, char* missedLetters, int missedCount, char* pattern
             // Rule 3: Revealed letters cannot be hidden
             if (pattern[i] == '_') {
                 for (int j = 0; j < length; j++) {
-                    if (pattern[j] != '_' && word[i] == pattern[j]) {
-                        return false;
-                    }
+                    if (pattern[j] != '_' && word[i] == pattern[j]) 
+                        return false;   
                 }
             }
-
-            
 
             // Rule 4: No missed letters
             for(int j = 0; j < missedCount;j++){
                 if(word[i] == missedLetters[j])
                     return false;
         }
-
     }
     return true;
 }
 
-char frequencyChooser(char* candidates[],int candidateCount){
+char frequencyChooser(char* candidates[],int candidateCount, char* pattern){
     int countPerLetter[26] = {0};
-
+    
     for(int i = 0; i < candidateCount; i++){
+        bool isCounted[26] = {false};
+        
         for(int j = 0;candidates[i][j] != '\0';j++){
             int index = candidates[i][j] - 'a';
-            countPerLetter[index]++;
+
+            if(!isCounted[index]){
+                countPerLetter[index]++;
+                isCounted[index] = true;
+            }
         }
     }
+
+    int bestSlot = -1;
+    int highest = 0;
+    
+
+    for(int i = 0; i < 26;i++){
+        char letter = 'a' + i;
+        bool guessed = false;
+
+        for(int j = 0; pattern[j] !='\0';j++){
+            if(pattern[j] == letter){
+                guessed = true;
+            }
+        }
+
+
+        if(!guessed && countPerLetter[i] > highest){
+
+            highest = countPerLetter[i];
+            bestSlot = i;
+        }
+
+    }
+    if(bestSlot == -1)
+        return '\0';
+
+    return 'a' + bestSlot;
 }
 
 int main(){
@@ -71,8 +100,9 @@ int main(){
            } 
            else{ break;}
         }
-        frequencyChooser(candidates,pickCount);
     }
+    char guess = frequencyChooser(candidates, pickCount, pattern);
+    printf("%c\n", guess);
 
     printf("Candidates: %d\n", pickCount);
     printf("First few: ");
