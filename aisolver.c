@@ -4,7 +4,7 @@
 #include "wordbank.h"
 #include <string.h>
 
-bool wordMatcher(char* word, char* missedLetters, int missedCount, char* pattern){
+static bool wordMatcher(char* word, char* missedLetters, int missedCount, char* pattern){
        int length = strlen(pattern);
        
        //rule one match length
@@ -34,7 +34,7 @@ bool wordMatcher(char* word, char* missedLetters, int missedCount, char* pattern
     return true;
 }
 
-char frequencyChooser(char* candidates[],int candidateCount, char* pattern){
+static char frequencyChooser(char* candidates[],int candidateCount, char* pattern){
     int countPerLetter[26] = {0};
     
     for(int i = 0; i < candidateCount; i++){
@@ -53,7 +53,6 @@ char frequencyChooser(char* candidates[],int candidateCount, char* pattern){
     int bestSlot = -1;
     int highest = 0;
     
-
     for(int i = 0; i < 26;i++){
         char letter = 'a' + i;
         bool guessed = false;
@@ -64,61 +63,47 @@ char frequencyChooser(char* candidates[],int candidateCount, char* pattern){
             }
         }
 
-
         if(!guessed && countPerLetter[i] > highest){
 
             highest = countPerLetter[i];
             bestSlot = i;
         }
-
     }
+    
     if(bestSlot == -1)
         return '\0';
 
     return 'a' + bestSlot;
 }
 
-int main(){
-    readList();     
+char bestGuess(char* pattern, char* missedLetters, int missedCount) {
+
+    static char* candidates[466471];
+
     int count = getCount();
-    
-    char pattern[] = "_________";
+    int picksCount = 0;
 
-    char missedLetters[26];
-    int missedCount = 0;
-
-    static char* candidates[60000];
-    int pickCount = 0;
-    
+    // Filter possible words
     for (int i = 0; i < count; i++) {
+
         char* word = getWord(i);
 
-        if (wordMatcher(word, missedLetters, missedCount, pattern )) { 
-           if(pickCount < 60000){
-               candidates[pickCount] = word;
-               pickCount++;
-           } 
-           else{ break;}
+        if (wordMatcher(word, missedLetters, missedCount,pattern)) {
+
+            candidates[picksCount] = word;
+            picksCount++;
         }
     }
-    char guess = frequencyChooser(candidates, pickCount, pattern);
-    printf("%c\n", guess);
 
-    printf("Candidates: %d\n", pickCount);
-    printf("First few: ");
-    for (int i = 0; i < pickCount && i < 5; i++)
-        printf("%s ", candidates[i]);
-    printf("\nMiddle: ");
-    if (pickCount > 0)
-        printf("%s ", candidates[pickCount / 2]);
-    printf("\nLast few: ");
-    for (int i = pickCount - 5 < 0 ? 0 : pickCount - 5; i < pickCount; i++)
-        printf("%s ", candidates[i]);
-    printf("\n");
+    // No candidates found
+    if (picksCount == 0) {
+        return '\0';
+    }
 
-      printf("loaded: %d\n", getCount());
-printf("[%s] len=%zu\n", getWord(0),      strlen(getWord(0)));
-printf("[%s] len=%zu\n", getWord(5000),   strlen(getWord(5000)));
-printf("[%s] len=%zu\n", getWord(getCount()-1), strlen(getWord(getCount()-1)));
-
+    // Choose the most frequent unguessed letter
+    return frequencyChooser(
+        candidates,
+        picksCount,
+        pattern
+    );
 }

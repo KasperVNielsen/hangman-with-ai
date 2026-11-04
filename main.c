@@ -2,7 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+#include <windows.h>
 
+#include "aisolver.h"
 #include "wordbank.h"
 
 struct word {
@@ -25,6 +28,8 @@ void gameLoop(){
 
     int lenght = strlen(answer);
     char shown[32];
+    char missedLetters[26];
+    int missedCount = 0;
     //printf("%s\n", answer);
 
     for (int i = 0; i < lenght; i++) shown[i] = '_';
@@ -34,13 +39,21 @@ void gameLoop(){
         printf("%s\n", shown);
         printf("Lives: %d\n", lives);
 
-        printf("Type a letter: ");
-        scanf(" %c", &guess);  
+        printf("Type a letter:\n ");
+        guess = bestGuess(shown, missedLetters, missedCount);
+
+        printf("ai guesses: %c ",guess);
+
+        if(guess =='\0'){
+            printf("no candidates");
+            break;
+        }
 
         int hit = 0;
         for (int i = 0; i < lenght; i++) {
             if (answer[i] == guess) {
                 shown[i] = guess;
+                
                 hit = 1;
             }
         }
@@ -48,6 +61,9 @@ void gameLoop(){
         if(!hit){
             lives--;
             printf("you didnt hit\n");
+
+            missedLetters[missedCount] = guess;
+            missedCount++;
 
             if(lives == 0){
                 printf("You lost. The word was: %s\n", answer);
@@ -59,6 +75,7 @@ void gameLoop(){
             printf("You won! The word was: %s\n", answer);
             break;
         }
+        Sleep(800);
     }
 }
 
